@@ -30,20 +30,23 @@ const emptySku = (orderId: string, riderId: string): SkuBreakdownRow => ({
   highVolumeSkuFlag: null,
 });
 
-const defaultForm = () => ({
-  orderId: `ORD-${String(Date.now()).slice(-6)}`,
-  riderId: '',
-  riderName: '',
-  deliveryDate: new Date().toISOString().split('T')[0],
-  orderStatus: 'Delivered' as OrderStatus,
-  hubId: '',
-  basePayout: 40,
-  driftDistance: 0,
-  cancellationReason: '',
-  cancelledBy: 'Customer',
-  cancellationCategory: 'Customer',
-  skus: [] as SkuBreakdownRow[],
-});
+const defaultForm = () => {
+  const orderId = `ORD-${String(Date.now()).slice(-6)}`;
+  return {
+    orderId,
+    riderId: '',
+    riderName: '',
+    deliveryDate: new Date().toISOString().split('T')[0],
+    orderStatus: 'Delivered' as OrderStatus,
+    hubId: '',
+    basePayout: 40,
+    driftDistance: 0,
+    cancellationReason: '',
+    cancelledBy: 'Customer',
+    cancellationCategory: 'Customer',
+    skus: [emptySku(orderId, 'R-NEW')] as SkuBreakdownRow[],
+  };
+};
 
 // ── Display helpers for the detail panel ─────────────────────
 function dash(val: unknown): string {
@@ -359,7 +362,7 @@ export default function ManualEntryPage() {
             </button>
           </div>
 
-          {(form.skus.length ? form.skus : [emptySku(form.orderId, form.riderId)]).map((sku, idx) => (
+          {form.skus.map((sku, idx) => (
             <div key={idx} style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr) auto', gap: 8, marginBottom: 8, alignItems: 'end' }}>
               <div>
                 {idx === 0 && <label className="label">SKU ID</label>}
