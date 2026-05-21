@@ -5,11 +5,14 @@
   },
   "config": {
     "basePayoutPerOrder": 40,
-    "driftNearThreshold": 0.1,
-    "driftMidThreshold": 0.5,
-    "nearAttemptMultiplier": 0.5,
-    "midAttemptMultiplier": 0.25,
-    "noAttemptMultiplier": 0,
+    "hubs": [
+      {
+        "hubId": "HUB-A",
+        "hubName": "Central Hub",
+        "driftThreshold": 0.1,
+        "baseOrderPayout": 40
+      }
+    ],
     "referenceDate": "2026-05-03",
     "workingDaysPerWeek": 6,
     "workingDaysPerMonth": 26,

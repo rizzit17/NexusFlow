@@ -81,6 +81,12 @@ export function recalculateOrderPayout(
   skuBreakdown: SkuBreakdownRow[],
   config: WorkbookConfig
 ): OrderPayout {
+  // Find hub by the order's hubId. If not found (e.g. hub deleted), fall back to
+  // a safe default threshold (0.5 km per spec) and use the stored basePayout.
+  const hub = order.hubId ? config.hubs?.find(h => h.hubId === order.hubId) : undefined;
+  const hubThreshold = hub ? hub.driftThreshold : 0.5;
+  const basePayout = hub ? hub.baseOrderPayout : order.basePayout;
+
   const totalOrderVolume = calcTotalOrderVolumeFromSkus(skuBreakdown, order.orderId);
   const totalDeliveredVolume = calcTotalDeliveredVolumeFromSkus(skuBreakdown, order.orderId);
   const fulfillmentRatio = calcFulfillmentRatio(
@@ -91,11 +97,11 @@ export function recalculateOrderPayout(
   const cancellationMultiplier = calcCancellationMultiplier(
     order.orderStatus,
     order.driftDistance,
-    config
+    hubThreshold
   );
   const finalOrderPayout = calcFinalOrderPayout(
     order.orderStatus,
-    order.basePayout,
+    basePayout,
     fulfillmentRatio,
     cancellationMultiplier
   );

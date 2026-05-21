@@ -54,9 +54,8 @@ export default function CancellationsPage() {
         <div className="card" style={{ padding: 20 }}>
           <div style={{ fontSize: 13.5, fontWeight: 600, marginBottom: 4 }}>Drift Compensation Tiers</div>
           <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginBottom: 14 }}>
-            ≤{config.driftNearThreshold} km = {config.nearAttemptMultiplier * 100}% ·
-            ≤{config.driftMidThreshold} km = {config.midAttemptMultiplier * 100}% ·
-            &gt;{config.driftMidThreshold} km = 0%
+            Paid = Drift ≤ Hub Threshold (100% Payout) ·
+            Unpaid = Drift &gt; Hub Threshold (0% Payout)
           </div>
           <DriftCompensationChart data={driftStats} />
         </div>

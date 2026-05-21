@@ -3,7 +3,7 @@
 // ============================================================
 
 import type { OrderPayout, SkuBreakdownRow } from '@/types/workbook';
-import { getCancellationPayoutTier } from './calculations';
+
 import type { WorkbookConfig } from '@/types/workbook';
 
 export function buildPayoutTrend(orderPayouts: OrderPayout[]) {
@@ -39,7 +39,7 @@ export function buildCancellationRecords(
       reason: o.cancellationReason,
       cancelledBy: o.cancelledBy,
       payout: o.finalOrderPayout,
-      tier: getCancellationPayoutTier(o.driftDistance ?? 999, config),
+      tier: o.cancellationMultiplier > 0 ? "100% (Within Hub Threshold)" : "0% (Outside Hub Threshold)",
     }));
 }
 
@@ -58,24 +58,19 @@ export function buildCancellationReasonStats(orderPayouts: OrderPayout[]) {
 
 export function buildDriftTierStats(orderPayouts: OrderPayout[]) {
   const tiers = [
-    { tier: '50% (≤0.1 km)', count: 0, payout: 0 },
-    { tier: '25% (0.1–0.5 km)', count: 0, payout: 0 },
-    { tier: '0% (>0.5 km)', count: 0, payout: 0 },
+    { tier: 'Within Hub Threshold (Paid)', count: 0, payout: 0 },
+    { tier: 'Outside Hub Threshold (Unpaid)', count: 0, payout: 0 },
   ];
   orderPayouts
     .filter(o => o.orderStatus === 'Cancelled')
     .forEach(o => {
-      const drift = o.driftDistance ?? 999;
       const payout = o.finalOrderPayout;
-      if (drift <= 0.1) {
+      if (o.cancellationMultiplier > 0) {
         tiers[0].count++;
         tiers[0].payout += payout;
-      } else if (drift <= 0.5) {
+      } else {
         tiers[1].count++;
         tiers[1].payout += payout;
-      } else {
-        tiers[2].count++;
-        tiers[2].payout += payout;
       }
     });
   return tiers.map(t => ({ ...t, payout: parseFloat(t.payout.toFixed(2)) }));

@@ -4,13 +4,16 @@
 
 export type OrderStatus = 'Delivered' | 'Partial' | 'Cancelled';
 
+export interface HubConfig {
+  hubId: string;
+  hubName: string;
+  driftThreshold: number;
+  baseOrderPayout: number;
+}
+
 export interface WorkbookConfig {
   basePayoutPerOrder: number;
-  driftNearThreshold: number;
-  driftMidThreshold: number;
-  nearAttemptMultiplier: number;
-  midAttemptMultiplier: number;
-  noAttemptMultiplier: number;
+  hubs: HubConfig[];
   referenceDate: string;
   workingDaysPerWeek: number;
   workingDaysPerMonth: number;
@@ -21,6 +24,7 @@ export interface WorkbookConfig {
 
 export interface OrderPayout {
   orderId: string;
+  hubId?: string;
   riderId: string;
   riderName: string;
   deliveryDate: string;
@@ -43,6 +47,7 @@ export interface OrderPayout {
   travelledDistance: number;
   distanceEfficiency: number;
   orderClassification: string;
+  operationalData?: Record<string, any>;
 }
 
 export interface SkuBreakdownRow {

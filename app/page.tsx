@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAnalyticsSnapshot, useOperationalKPIs } from '@/store/useStore';
 import { useSearchFilter } from '@/hooks/useSearchFilter';
 import { SearchFilterBanner } from '@/components/ui/SearchFilterBanner';
@@ -17,6 +19,15 @@ import {
 } from 'lucide-react';
 
 export default function ExecutiveDashboard() {
+  const router = useRouter();
+
+  // First-visit gate: redirect to landing page if not yet seen
+  useEffect(() => {
+    if (!localStorage.getItem('ds_nexus_visited')) {
+      router.replace('/intro');
+    }
+  }, [router]);
+
   const snap = useAnalyticsSnapshot();
   const ops = useOperationalKPIs();
   const { filteredOrders, filteredRiders, isSearchActive, matchCount } = useSearchFilter();

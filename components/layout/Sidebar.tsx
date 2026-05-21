@@ -8,13 +8,14 @@ import {
 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/',                 label: 'Executive Dashboard', icon: LayoutDashboard },
-  { href: '/sku-breakdown',    label: 'SKU Breakdown',       icon: Package },
-  { href: '/order-payout',     label: 'Order Payout',        icon: ShoppingCart },
-  { href: '/rider-summary',    label: 'Rider Summary',        icon: Users },
-  { href: '/cancellations',    label: 'Cancellations',        icon: XCircle },
-  { href: '/upload',           label: 'Excel Upload',         icon: Upload },
-  { href: '/manual-entry',     label: 'Manual Entry',         icon: PenSquare },
+  { href: '/', label: 'Executive Dashboard', icon: LayoutDashboard },
+  { href: '/sku-breakdown', label: 'SKU Breakdown', icon: Package },
+  { href: '/order-payout', label: 'Order Payout', icon: ShoppingCart },
+  { href: '/rider-summary', label: 'Rider Summary', icon: Users },
+  { href: '/cancellations', label: 'Cancellations', icon: XCircle },
+  { href: '/upload', label: 'Excel Upload', icon: Upload },
+  { href: '/manual-entry', label: 'Manual Entry', icon: PenSquare },
+  { href: '/settings', label: 'Hub Settings', icon: Settings },
 ];
 
 export function Sidebar() {

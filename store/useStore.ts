@@ -3,14 +3,29 @@
 // ============================================================
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { NexusGlobalData, OrderPayout, SkuBreakdownRow, WorkbookConfig } from '@/types/workbook';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import type { NexusGlobalData, OrderPayout, SkuBreakdownRow, WorkbookConfig, HubConfig } from '@/types/workbook';
+import { idbStorage } from './idbStorage';
 import { getInitialWorkbook } from '@/lib/workbookLoad';
 import { recalculateWorkbook } from '@/lib/workbookEngine';
+
+// ─── Notification types ────────────────────────────────────────
+
+export type NotificationType = 'order_added' | 'excel_upload' | 'compensated' | 'no_payout';
+
+export interface AppNotification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  timestamp: number;   // Date.now() — serialisation-safe
+  read: boolean;
+}
 
 interface NexusStore extends NexusGlobalData {
   isHydrated: boolean;
   globalSearch: string;
+  notifications: AppNotification[];
   setHydrated: () => void;
   setGlobalSearch: (query: string) => void;
   updateConfig: (updates: Partial<WorkbookConfig>) => void;
@@ -19,6 +34,13 @@ interface NexusStore extends NexusGlobalData {
   updateOrderPayout: (orderId: string, order: Partial<OrderPayout>, skus?: SkuBreakdownRow[]) => void;
   deleteOrderPayout: (orderId: string) => void;
   importOrderPayouts: (orders: OrderPayout[], skus: SkuBreakdownRow[]) => void;
+  replaceOrderPayouts: (orders: OrderPayout[], skus: SkuBreakdownRow[]) => void;
+  addHub: (hub: HubConfig) => void;
+  updateHub: (hubId: string, updates: Partial<HubConfig>) => void;
+  removeHub: (hubId: string) => void;
+  addNotification: (n: Omit<AppNotification, 'id' | 'timestamp' | 'read'>) => void;
+  markAllRead: () => void;
+  clearNotifications: () => void;
   /** Restore factory workbook — only for admin/debug, not exposed in UI */
   resetToWorkbook: () => void;
 }
@@ -37,6 +59,7 @@ export const useStore = create<NexusStore>()(
       ...initial,
       isHydrated: false,
       globalSearch: '',
+      notifications: [] as AppNotification[],
 
       setHydrated: () => set({ isHydrated: true }),
 
@@ -102,11 +125,66 @@ export const useStore = create<NexusStore>()(
           return applyRecalc(next);
         }),
 
+      replaceOrderPayouts: (orders, skus) =>
+        set(state => {
+          const next = {
+            ...state,
+            orderPayouts: orders,
+            skuBreakdown: skus,
+          };
+          return applyRecalc(next);
+        }),
+
+      addHub: (hub) =>
+        set(state => applyRecalc({
+          ...state,
+          config: { ...state.config, hubs: [...state.config.hubs, hub] }
+        })),
+
+      updateHub: (hubId, updates) =>
+        set(state => applyRecalc({
+          ...state,
+          config: {
+            ...state.config,
+            hubs: state.config.hubs.map(h => h.hubId === hubId ? { ...h, ...updates } : h)
+          }
+        })),
+
+      removeHub: (hubId) =>
+        set(state => applyRecalc({
+          ...state,
+          config: {
+            ...state.config,
+            hubs: state.config.hubs.filter(h => h.hubId !== hubId)
+          }
+        })),
+
+      addNotification: (n) =>
+        set(state => ({
+          notifications: [
+            {
+              ...n,
+              id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+              timestamp: Date.now(),
+              read: false,
+            },
+            ...state.notifications,
+          ],
+        })),
+
+      markAllRead: () =>
+        set(state => ({
+          notifications: state.notifications.map(n => ({ ...n, read: true })),
+        })),
+
+      clearNotifications: () => set({ notifications: [] }),
+
       resetToWorkbook: () =>
         set({ ...applyRecalc(getInitialWorkbook()), isHydrated: true, globalSearch: '' }),
     }),
     {
       name: 'nexusflow-workbook-v2',
+      storage: createJSONStorage(() => idbStorage),
       partialize: (state): PersistedSlice => ({
         config: state.config,
         orderPayouts: state.orderPayouts,

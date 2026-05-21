@@ -8,7 +8,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { KpiCard } from '@/components/ui/KpiCard';
 import { FilterBar } from '@/components/ui/FilterBar';
 import { StatusBadge } from '@/components/ui/StatusBadge';
-import { formatCurrency, formatPercent, getCancellationPayoutTier } from '@/lib/calculations';
+import { formatCurrency, formatPercent } from '@/lib/calculations';
 import { IndianRupee, TrendingUp, MapPin, ShoppingCart } from 'lucide-react';
 
 const FILTERS = [
@@ -88,7 +88,7 @@ export default function OrderPayoutPage() {
                       <>
                         <div>{order.driftDistance?.toFixed(2)} km</div>
                         <div style={{ fontSize: 10.5, color: 'var(--text-faint)' }}>
-                          {getCancellationPayoutTier(order.driftDistance ?? 999, config)}
+                          {order.cancellationMultiplier > 0 ? "Paid" : "Unpaid"}
                         </div>
                       </>
                     ) : '—'}

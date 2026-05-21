@@ -104,13 +104,11 @@ export function calcFulfillmentRatio(
 export function calcCancellationMultiplier(
   orderStatus: OrderStatus,
   driftKm: number | null,
-  config: WorkbookConfig
+  hubThreshold: number
 ): number {
   if (orderStatus !== 'Cancelled') return 1;
   const drift = driftKm ?? 999;
-  if (drift <= config.driftNearThreshold) return config.nearAttemptMultiplier;
-  if (drift <= config.driftMidThreshold) return config.midAttemptMultiplier;
-  return config.noAttemptMultiplier;
+  return drift <= hubThreshold ? 1 : 0;
 }
 
 export function calcFinalOrderPayout(
@@ -137,16 +135,11 @@ export function calcOrderClassification(
   if (orderStatus === 'Delivered') return 'Fully Delivered';
   if (orderStatus === 'Partial') return 'Partially Delivered';
   if (orderStatus === 'Cancelled' && cancellationMultiplier > 0) {
-    return 'Cancelled With Attempt';
+    return 'Cancelled With Valid Attempt';
   }
-  return 'Cancelled Without Attempt';
+  return 'Cancelled Without Valid Attempt';
 }
 
-export function getCancellationPayoutTier(driftKm: number, config: WorkbookConfig): string {
-  if (driftKm <= config.driftNearThreshold) return '50% (Genuine Attempt)';
-  if (driftKm <= config.driftMidThreshold) return '25% (Near Attempt)';
-  return '0% (No Attempt)';
-}
 
 // ─── Rider / Fleet aggregations ─────────────────────────────
 
@@ -172,10 +165,10 @@ export function calcRiderSummaries(
 
     const avgFulfillmentRatio = nonCancelled.length
       ? parseFloat(
-          (
-            nonCancelled.reduce((s, o) => s + o.fulfillmentRatio, 0) / nonCancelled.length
-          ).toFixed(4)
-        )
+        (
+          nonCancelled.reduce((s, o) => s + o.fulfillmentRatio, 0) / nonCancelled.length
+        ).toFixed(4)
+      )
       : 0;
 
     const sumPayoutInRange = (from: Date, to: Date) =>
@@ -245,10 +238,10 @@ export function calcFleetTotals(
   const nonCancelled = orderPayouts.filter(o => o.orderStatus !== 'Cancelled');
   const avgFulfillmentRatio = nonCancelled.length
     ? parseFloat(
-        (
-          nonCancelled.reduce((s, o) => s + o.fulfillmentRatio, 0) / nonCancelled.length
-        ).toFixed(4)
-      )
+      (
+        nonCancelled.reduce((s, o) => s + o.fulfillmentRatio, 0) / nonCancelled.length
+      ).toFixed(4)
+    )
     : 0;
 
   const sumPayoutInRange = (from: Date, to: Date) =>
