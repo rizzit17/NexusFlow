@@ -11,7 +11,7 @@
 ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚══════╝ ╚═════╝  ╚══╝╚══╝
 ```
 
-**DS Group — Volumetric Rider Payout Intelligence Platform**
+**DS Group - Volumetric Rider Payout Intelligence Platform**
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.2.6-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
@@ -235,7 +235,7 @@ Excel Workbook (.xlsx)
 
 ## 👤 Author
 
-**Rishit** — [@rizzit17](https://github.com/rizzit17)
+**Rishit** - [@rizzit17](https://github.com/rizzit17)
 
 Built for **DS Group** internal logistics operations.
 
@@ -243,6 +243,6 @@ Built for **DS Group** internal logistics operations.
 
 <div align="center">
 
-*DS NexusFlow — Turning raw delivery data into operational intelligence.*
+*DS NexusFlow - Turning raw delivery data into operational intelligence.*
 
 </div>
