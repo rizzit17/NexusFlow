@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Executive Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard', label: 'Executive Dashboard', icon: LayoutDashboard },
   { href: '/sku-breakdown', label: 'SKU Breakdown', icon: Package },
   { href: '/order-payout', label: 'Order Payout', icon: ShoppingCart },
   { href: '/rider-summary', label: 'Rider Summary', icon: Users },
@@ -45,8 +45,16 @@ export function Sidebar() {
             background: 'var(--ds-green-800)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
+            padding: 5,
           }}>
-            <Zap size={16} color="white" strokeWidth={2.5} />
+            <svg viewBox="0 0 100 100" width={22} height={22} style={{ display: 'block' }}>
+              <g fill="white">
+                {/* Left Stem of D with S-curve cut */}
+                <path d="M22 20 H45 C38 31, 31 40, 31 50 C31 60, 38 69, 45 80 H22 Z" />
+                {/* Right Arch of D with S-curve cut */}
+                <path d="M53 20 C68 20, 78 33, 78 50 C78 67, 68 80, 53 80 C46 69, 39 60, 39 50 C39 40, 46 31, 53 20 Z" />
+              </g>
+            </svg>
           </div>
           <div>
             <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2 }}>

@@ -35,14 +35,14 @@ export function KpiCard({ label, value, sub, icon, trend, delay = 0 }: KpiCardPr
           </div>
         )}
       </div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+      <div style={{ fontSize: 25, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
         {value}
       </div>
-      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4, fontWeight: 500 }}>
+      <div style={{ fontSize: 13.5, color: 'var(--text-muted)', marginTop: 6, fontWeight: 600 }}>
         {label}
       </div>
       {sub && (
-        <div style={{ fontSize: 11, color: 'var(--text-faint)', marginTop: 2 }}>{sub}</div>
+        <div style={{ fontSize: 12, color: 'var(--text-faint)', marginTop: 3 }}>{sub}</div>
       )}
     </div>
   );

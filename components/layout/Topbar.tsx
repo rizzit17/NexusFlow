@@ -8,7 +8,7 @@ import { useStore } from '@/store/useStore';
 import type { AppNotification, NotificationType } from '@/store/useStore';
 
 const PAGE_LABELS: Record<string, string> = {
-  '/':              'Executive Dashboard',
+  '/dashboard':     'Executive Dashboard',
   '/sku-breakdown': 'SKU Breakdown',
   '/order-payout':  'Order Payout',
   '/rider-summary': 'Rider Summary',
@@ -163,7 +163,7 @@ export function Topbar() {
         data-tooltip="How it works"
         style={{ padding: '6px 10px' }}
         aria-label="How it works"
-        onClick={() => router.push('/intro')}
+        onClick={() => router.push('/')}
       >
         <HelpCircle size={15} />
       </button>
@@ -269,9 +269,17 @@ export function Topbar() {
         width: 30, height: 30, borderRadius: '50%',
         background: 'var(--ds-green-800)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 11.5, fontWeight: 700, color: 'white', flexShrink: 0,
+        flexShrink: 0,
+        padding: 5,
       }}>
-        DS
+        <svg viewBox="0 0 100 100" width={16} height={16} style={{ display: 'block' }}>
+          <g fill="white">
+            {/* Left Stem of D with S-curve cut */}
+            <path d="M22 20 H45 C38 31, 31 40, 31 50 C31 60, 38 69, 45 80 H22 Z" />
+            {/* Right Arch of D with S-curve cut */}
+            <path d="M53 20 C68 20, 78 33, 78 50 C78 67, 68 80, 53 80 C46 69, 39 60, 39 50 C39 40, 46 31, 53 20 Z" />
+          </g>
+        </svg>
       </div>
     </header>
   );

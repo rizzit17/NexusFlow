@@ -21,7 +21,7 @@ export function PageHeader({ title, description, actions, badge }: PageHeaderPro
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <h2 style={{
-            fontSize: 19,
+            fontSize: 22,
             fontWeight: 700,
             color: 'var(--text-primary)',
             margin: 0,
@@ -42,7 +42,7 @@ export function PageHeader({ title, description, actions, badge }: PageHeaderPro
           )}
         </div>
         {description && (
-          <p style={{ fontSize: 12.5, color: 'var(--text-muted)', margin: 0 }}>{description}</p>
+          <p style={{ fontSize: 13.5, color: 'var(--text-muted)', margin: 0 }}>{description}</p>
         )}
       </div>
       {actions && (
