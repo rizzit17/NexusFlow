@@ -25,7 +25,7 @@
 
 ---
 
-## 📖 Overview
+## Overview
 
 **DS NexusFlow** is a full-stack, production-ready analytics platform built for DS Group's last-mile delivery operations. It replaces manual Excel-based payout processing with a live, formula-accurate engine that ingests custom workbooks, computes hub-specific volumetric rider payouts, and surfaces executive-grade operational insights — all in a single, beautifully designed web interface.
 
@@ -33,44 +33,44 @@
 
 ---
 
-## ✨ Features
+## Features
 
-### 📊 Executive Dashboard
+### Executive Dashboard
 Real-time KPI cards displaying total payout, active riders, fleet fulfillment rate, cancellation compensation, and delivered volume. Includes payout trend charts, order status distributions, and a top-rider leaderboard.
 
-### 📦 SKU Breakdown Engine
+### SKU Breakdown Engine
 Deep SKU-level analytics per order — unit volumes, delivery status classification (`Fully Delivered` / `Partially Delivered` / `Not Delivered`), bulky SKU flagging, and volume contribution percentages.
 
-### 💰 Order Payout Calculator
+### Order Payout Calculator
 Mirrors the Excel formula engine exactly:
 - **Fulfillment ratio** = `totalDeliveredVolume / totalOrderVolume`
 - **Binary cancellation multiplier** based on hub GPS drift threshold
 - **Final payout** = `basePayout × fulfillmentRatio` (or `basePayout × cancellationMultiplier` for cancelled orders)
 
-### 🧾 Rider Summary Module
+### Rider Summary Module
 Per-rider aggregates: daily / weekly / monthly payouts, genuine delivery attempts, failed attempts, cancellation compensation, and average fulfillment ratios — all computed from raw order data.
 
-### ⚠️ Cancellations Intelligence
+### Cancellations Intelligence
 Separates `Cancelled With Valid Attempt` from `Cancelled Without Valid Attempt` using per-hub GPS drift thresholds. Configurable compensation logic per hub.
 
-### 📥 Excel Ingestion (SheetJS)
+### Excel Ingestion (SheetJS)
 Upload custom `.xlsx` workbooks. The parser service auto-detects DS Group sheet schemas, enriches SKU data from an internal registry, and hydrates the global Zustand store — no manual data entry required.
 
-### ✏️ Manual Order Entry
+### Manual Order Entry
 Add, edit, and remove individual orders through a form-based UI. Fully reactive — all downstream KPIs recalculate instantly via Zustand selectors.
 
-### ⚙️ Settings & Hub Configuration
+### Settings & Hub Configuration
 Admin interface to configure hub-level GPS drift thresholds, base payout rates, bulky SKU volume thresholds, and reference dates. Changes propagate globally and trigger a full engine recalculation.
 
-### 🔔 Notification System
+### Notification System
 Ephemeral, session-based notification bell with read/unread badge tracking. Fires contextual alerts for manual additions, bulk uploads, and compensation triggers.
 
-### 🔍 Global Search & Filter
+### Global Search & Filter
 Cross-page search that filters orders and riders in real-time, with a result-count banner on the dashboard.
 
 ---
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 | Layer | Technology | Purpose |
 |---|---|---|
@@ -87,7 +87,7 @@ Cross-page search that filters orders and riders in real-time, with a result-cou
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 nexusflow/
@@ -140,7 +140,7 @@ nexusflow/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -172,7 +172,7 @@ npm start
 
 ---
 
-## 🧮 Payout Formula Reference
+## Payout Formula Reference
 
 NexusFlow precisely replicates the DS Group v2 payout model:
 
@@ -199,7 +199,7 @@ CancellationRate     = cancelledOrders / totalOrders
 
 ---
 
-## 📡 Data Flow
+## Data Flow
 
 ```
 Excel Workbook (.xlsx)
@@ -222,7 +222,7 @@ Excel Workbook (.xlsx)
 
 ---
 
-## 🛣️ Roadmap
+## Roadmap
 
 - [ ] Multi-hub workbook comparison view
 - [ ] PDF / CSV export for rider payout reports
@@ -233,7 +233,7 @@ Excel Workbook (.xlsx)
 
 ---
 
-## 👤 Author
+## Author
 
 **Rishit** - [@rizzit17](https://github.com/rizzit17)
 
